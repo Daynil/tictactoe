@@ -32,6 +32,15 @@ $table-border: 2px solid $color-dark;
 		#game-board {
 			text-align: center;
 			border-spacing: 0;
+			.cell-container {
+				position: relative;
+			}
+			.cell {
+				position: absolute;
+				bottom: 0px;
+				height: 150px; 
+				width: 150px; 
+			}
 			td {
 				width: 150px;
 				height: 150px;

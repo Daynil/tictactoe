@@ -8,17 +8,43 @@ import { Component, View } from 'angular2/core';
 	styleUrls: ['../css/app.css']
 })
 export class BaseComponent {
-	oanimate;
+	
+	xoro = "X";
+	svgs = {
+		["X"]: '../assets/tictactoe-x.svg',
+		["O"]: '../assets/tictactoe-o.svg'
+	}
+	cellList = {
+		['cell1']: null,
+		['cell2']: null,
+		['cell3']: null
+	}
 	
 	constructor() {
-		this.oanimate = this.setAnimation('oanimate', '../assets/tictactoe-x.svg');
+		//this.oanimate = this.setAnimation('oanimate', '../assets/tictactoe-x.svg');
 	}
 	
 	setAnimation(cellID: string, svgFile: string) {
-		return new Vivus(cellID, {duration: 25, file: svgFile, start: 'manual'});
+		return new Vivus(cellID, {duration: 25, file: svgFile, start: 'manual'}, this.readyAnimate);
 	}
 	
-	animate() {
-		this.oanimate.play(1);
+	readyAnimate(cellID) {
+		this.cellList[cellID].play(1);
+		console.log("success?");
+	}
+	
+	animate(cell) {
+		//this.oanimate.play(1);
+		//console.log(cell);
+		console.log(cell.id, typeof cell.id);
+		console.log(this.svgs[this.xoro], typeof this.svgs[this.xoro]);
+		this.cellList[cell.id] = this.setAnimation(cell.id, this.svgs[this.xoro]);
+		//this.cellList[cell.id] = "hello";
+		//console.log(this.cellList[cell.id]);
+	}
+	
+	switchXO() {
+		if (this.xoro == "X") this.xoro = "O";
+		else this.xoro = "X";
 	}
 }

@@ -1,22 +1,22 @@
 <div id="page-wrapper">
 	<h2><span>#</span>Tic Tac Toe</h2>
-	
+	<div><button (click)="switchXO()">{{ xoro }}</button></div>
 	<div id="board-wrapper">
 		<table id="game-board">
 			<tr id="top-row">
-				<td class="left-column" id="oanimate"></td>
-				<td (click)="animate()">X</td>
-				<td class="right-column">O</td>
+				<td #cell1 class="left-column cell-container" id="cell1"><div class="cell" (click)="animate(cell1)"></div></td>
+				<td #cell2 class="cell-container" id="cell2"><div class="cell" (click)="animate(cell2)"></div></td>
+				<td #cell3 class="right-column cell-container" id="cell3"><div class="cell" (click)="animate(cell3)"></div></td>
 			</tr>
 			<tr id="middle-row">
-				<td class="left-column">O</td>
-				<td>X</td>
-				<td class="right-column">O</td>
+				<td #cell4 class="left-column cell-container" id="cell4"><div class="cell" (click)="animate(cell4)"></div></td>
+				<td #cell5 class="cell-container" id="cell5"><div class="cell" (click)="animate(cell5)"></div></td>
+				<td #cell6 class="right-column cell-container" id="cell6"><div class="cell" (click)="animate(cell6)"></div></td>
 			</tr>
 			<tr id="bottom-row">
-				<td class="left-column">X</td>
-				<td>O</td>
-				<td class="right-column">X</td>
+				<td #cell7 class="left-column cell-container" id="cell7"><div class="cell" (click)="animate(cell7)"></div></td>
+				<td #cell8 class="cell-container" id="cell8"><div class="cell" (click)="animate(cell8)"></div></td>
+				<td #cell9 class="right-column cell-container" id="cell9"><div class="cell" (click)="animate(cell9)"></div></td>
 			</tr>
 		</table>
 	</div>
