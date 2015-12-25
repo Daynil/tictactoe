@@ -1,0 +1,93 @@
+$color-theme-main: hsl(144, 57%, 59%);
+$color-dark: hsl(36, 4%, 24%);
+$color-light: hsla(36, 4%, 24%, 0.1);
+
+$font-main: normal 30px 'Open Sans';
+$font-sub:  normal 20px 'Open Sans';
+$font-small: normal 15px 'Open Sans';
+
+$table-border: 2px solid $color-dark;
+
+#page-wrapper {
+	height: 100vh;
+	width: 100%;
+	margin-bottom: -80px;
+	font: $font-main;
+	text-align: center;
+	span {
+		color: $color-theme-main;
+		transition: 0.3s;
+	}
+	h2 {
+		color: $color-dark;
+		&:hover span {
+			color: $color-dark;
+		}
+	}
+	
+	#board-wrapper {
+		display: inline-block;
+		margin: 0 auto;
+		margin-top: 5%;
+		#game-board {
+			text-align: center;
+			border-spacing: 0;
+			td {
+				width: 150px;
+				height: 150px;
+				transition: 0.2s;
+				&:hover {
+					background-color: $color-light;
+					cursor: pointer;
+				}
+			}
+			.left-column {
+				border-right: $table-border;
+			}
+			.right-column {
+				border-left: $table-border;
+			}
+			#top-row {
+				td {
+					border-bottom: $table-border;
+				}
+			}
+			#bottom-row {
+				td {
+					border-top: $table-border;
+				}
+			}
+		}
+	}
+}
+
+#foot {
+	font-family: 'Ubuntu';
+	font-size: 18px;
+	background-color: hsl(77, 2%, 22%);
+	font-family: 'Open Sans';
+	color: aliceblue;
+	line-height: 28px;
+	width: 100%;
+	height: 80px;
+	text-align: center;
+	#foot-text {
+		position: relative;
+		top: 10px;
+	}
+}
+
+#foot i, #foot a {
+	color: $color-theme-main;
+	transition: 0.6s;
+	text-decoration: none;
+}
+
+#foot a:hover, #gh-link:hover i {
+	color: aliceblue;
+	text-decoration: none;
+}
+
+#foot i {
+	padding-left: 2px;
+}

@@ -4,11 +4,21 @@ import { Component, View } from 'angular2/core';
 	selector: 'my-app'
 })
 @View({
-	template: '<h1>Hello {{ name }}</h1>'
+	templateUrl: '../html/app.html',
+	styleUrls: ['../css/app.css']
 })
 export class BaseComponent {
-	name: string;
+	oanimate;
+	
 	constructor() {
-		this.name = 'Alice!';
+		this.oanimate = this.setAnimation('oanimate', '../assets/tictactoe-x.svg');
+	}
+	
+	setAnimation(cellID: string, svgFile: string) {
+		return new Vivus(cellID, {duration: 25, file: svgFile, start: 'manual'});
+	}
+	
+	animate() {
+		this.oanimate.play(1);
 	}
 }
