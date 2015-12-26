@@ -25,22 +25,26 @@ export class BaseComponent {
 	}
 	
 	setAnimation(cellID: string, svgFile: string) {
-		return new Vivus(cellID, {duration: 25, file: svgFile, start: 'manual'}, this.readyAnimate);
+		return new Vivus(cellID, {duration: 25, file: svgFile, start: 'manual'});
 	}
 	
 	readyAnimate(cellID) {
+		console.log(this.cellList[cellID]);
 		this.cellList[cellID].play(1);
-		console.log("success?");
 	}
 	
 	animate(cell) {
 		//this.oanimate.play(1);
 		//console.log(cell);
-		console.log(cell.id, typeof cell.id);
-		console.log(this.svgs[this.xoro], typeof this.svgs[this.xoro]);
-		this.cellList[cell.id] = this.setAnimation(cell.id, this.svgs[this.xoro]);
-		//this.cellList[cell.id] = "hello";
-		//console.log(this.cellList[cell.id]);
+		if (this.cellList[cell.id] == null) {			
+			console.log(cell.id, typeof cell.id);
+			console.log(this.svgs[this.xoro], typeof this.svgs[this.xoro]);
+			this.cellList[cell.id] = this.setAnimation(cell.id, this.svgs[this.xoro]);
+			//this.cellList[cell.id] = "hello";
+			console.log(this.cellList[cell.id]);
+			console.log(this.cellList[cell.id].isReady);
+		}
+		else this.cellList[cell.id].play(1);
 	}
 	
 	switchXO() {
