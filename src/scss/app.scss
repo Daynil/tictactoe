@@ -1,4 +1,5 @@
 $color-theme-main: hsl(144, 57%, 59%);
+$color-theme-main-light: hsl(144, 57%, 75%);
 $color-dark: hsl(36, 4%, 24%);
 $color-light: hsla(36, 4%, 24%, 0.1);
 
@@ -22,6 +23,26 @@ $table-border: 2px solid $color-dark;
 		color: $color-dark;
 		&:hover span {
 			color: $color-dark;
+		}
+	}
+	
+	#replay {
+		color: $color-dark;
+		border: 1px solid $color-theme-main;
+		border-radius: 14px;
+		padding: 8px;
+		font-size: 20px;
+		position: relative;
+		bottom: 3px;
+		left: 25px;
+		transition: 0.2s;
+		&:hover {
+			cursor: pointer;
+			color: aliceblue;
+			background-color: $color-theme-main;
+		}
+		&:active {
+			background-color: $color-theme-main-light;
 		}
 	}
 	

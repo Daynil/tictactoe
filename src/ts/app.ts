@@ -15,11 +15,11 @@ export class BaseComponent {
 
 	}
 	
-	animate(cell) {
-		this.tttService.animate(cell);
+	animate(cellID) {
+		this.tttService.animate(cellID);
 	}
 	
-	switchXO() {
-		this.tttService.nextTurn();
+	resetGame() {
+		this.tttService.resetGame();
 	}
 }
