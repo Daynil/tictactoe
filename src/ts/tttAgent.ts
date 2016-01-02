@@ -1,8 +1,16 @@
 import { TTTService as game } from './app.service';
 
+interface MoveScore {
+	move: string,
+	score: number
+}
+
 export class TicTacToeAgent {
 	agentXorO: string;
 	opponentXorO: string;
+	
+	depthTracker = 0;
+	recursiveDepth = 1000;
 	
 	constructor(xoro: string) {
 		this.agentXorO = xoro;
@@ -21,72 +29,71 @@ export class TicTacToeAgent {
 		return legalMoves;
 	}
 	
-	private generateSuccessorState(state, move, isMaximizingAgent) {
-		if (isMaximizingAgent) state.cellList[move].xoro = this.agentXorO;
-		else state.cellList[move].xoro = this.opponentXorO;
+	private generateSuccessorState(prevState, move) {
+		let state = JSON.parse(JSON.stringify(prevState)); // Clone to avoid reference issues
+		state.cellList[move].xoro = state.currTurn;
+		if (state.currTurn == "X") state.currTurn = "O";
+		else state.currTurn = "X";
 		return state;
 	}
 	
 	public getNextMove(stateOrig) {
 		let state = JSON.parse(JSON.stringify(stateOrig));
-		let moveUtility = this.getUtility(state, true);
-		return moveUtility.move;
+		//let moveUtility = this.getUtility(state, true);
+		let moveScore = this.minimax(state);
+		this.depthTracker = 0;
+		return moveScore.move;
 	}
 	
-	private getUtility(state, isMaximizingAgent) {
-		let gameCondition = game.checkWinCondition(state);
-		let moveUtility = {move: null, utility: 0};
+	private scoreGame(winner: string): number {
+		let score = 0;
+		if (winner == this.agentXorO) score = 10;
+		else if (winner == this.opponentXorO) score = -10;
+		return score;
+	}
+	
+	private getOptimalScore(minormax: string, movesScores: MoveScore[]): MoveScore {
+		let optimal: MoveScore;
+		let minTracker = 9999;
+		let maxTracker = -9999;
 		
-		// Base cases
-		if (gameCondition == 'Win') {
-			if (isMaximizingAgent) {
-				moveUtility.utility = 1;
-				return moveUtility;
+		movesScores.forEach( moveScore => {
+			if (minormax == 'max') {
+				if (moveScore.score > maxTracker) {
+					maxTracker = moveScore.score;
+					optimal = moveScore;
+				}
 			} else {
-				moveUtility.utility = -1;
-				return moveUtility;
+				if (moveScore.score < minTracker) {
+					minTracker = moveScore.score;
+					optimal = moveScore;
+				}
 			}
-		} else if (gameCondition == 'Draw') return moveUtility;
+		});
 		
-		// Continue recursion
-		if (isMaximizingAgent) return this.maxValue(state, isMaximizingAgent);
-		else return this.minValue(state, isMaximizingAgent);
+		return optimal;
 	}
 	
-	private maxValue(state, isMaximizingAgent): any {
-		let value = -999999;
-		let nextMove = '';
-		isMaximizingAgent = !isMaximizingAgent;
-		let moveUtility: {move: string, utility: number} = null;
+	private minimax(state): MoveScore {
+		let gameCondition = game.checkWinCondition(state);
+		if (gameCondition.state == 'Win' || gameCondition.state == 'Draw'){
+			return {move: '', score: this.scoreGame(gameCondition.winner)};	
+		} 
+		let movesScores: MoveScore[] = [];  // An array of each move and the value it produces at the end of the game
+		
 		this.getLegalMoves(state).forEach( move => {
-			let nextState = this.generateSuccessorState(state, move, true);
-			moveUtility = this.getUtility(nextState, isMaximizingAgent);
-			if (moveUtility.utility > value) {
-				value = moveUtility.utility;
-				nextMove = move;
-			}
+			let nextState = this.generateSuccessorState(state, move);
+			let nextStateMS = this.minimax(nextState);
+			movesScores.push({move: move, score: nextStateMS.score});
 		});
-		moveUtility.utility = value;
-		moveUtility.move = nextMove;
-		return moveUtility;
-	}
-	
-	private minValue(state, isMaximizingAgent): any {
-		let value = 999999;
-		let nextMove = '';
-		isMaximizingAgent = !isMaximizingAgent;
-		let moveUtility: {move: string, utility: number} = null;
-		this.getLegalMoves(state).forEach( move => {
-			let nextState = this.generateSuccessorState(state, move, false);
-			moveUtility = this.getUtility(nextState, isMaximizingAgent);
-			if (moveUtility.utility < value) {
-				value = moveUtility.utility;
-				nextMove = move;
-			}
-		});
-		moveUtility.utility = value;
-		moveUtility.move = nextMove;
-		return moveUtility;
+		
+		if (state.currTurn == this.agentXorO) {
+			let bestMoveScore = this.getOptimalScore('max', movesScores);
+			return bestMoveScore;
+		} else {
+			let bestMoveScore = this.getOptimalScore('min', movesScores);
+			return bestMoveScore;
+		}
 	}
 	
 }

@@ -51,10 +51,10 @@ export class TTTService {
 			clickedCell.anim = this.setAnimation(cellID, this.svgs[this.gameState.currTurn]);
 			clickedCell.xoro = this.gameState.currTurn;
 			let gameCondition = TTTService.checkWinCondition(this.gameState);
-			if (gameCondition == 'Win') {
+			if (gameCondition.state == 'Win') {
 				this.gameState.winner = this.gameState.currTurn;
 				this.setTurnText();
-			} else if (gameCondition == 'Draw') {
+			} else if (gameCondition.state == 'Draw') {
 				this.gameState.winner = 'Draw';
 				this.setTurnText();
 			} else {
@@ -67,7 +67,7 @@ export class TTTService {
 		if (this.gameState.currTurn == "X") this.gameState.currTurn = "O";
 		else this.gameState.currTurn = "X";
 		this.setTurnText();
-		if (this.gameState.currTurn = this.agentXorO) {
+		if (this.gameState.currTurn == this.agentXorO) {
 			this.animate(this.agent.getNextMove(this.gameState));
 		}
 	}
@@ -83,27 +83,27 @@ export class TTTService {
 		else return false;
 	}
 	
-	static checkWinCondition(state): string {
+	static checkWinCondition(state): {state: string, winner: string} {
 		// Horizontal Wins
-		if (this.checkRow(state, '1', '2', '3')) return 'Win';
-		if (this.checkRow(state, '4', '5', '6')) return 'Win';
-		if (this.checkRow(state, '7', '8', '9')) return 'Win';
+		if (this.checkRow(state, '1', '2', '3')) return {state: 'Win', winner: this.getMoveAt(state, '1')};
+		if (this.checkRow(state, '4', '5', '6')) return {state: 'Win', winner: this.getMoveAt(state, '4')};
+		if (this.checkRow(state, '7', '8', '9')) return {state: 'Win', winner: this.getMoveAt(state, '7')};
 		
 		// Vertical Wins
-		if (this.checkRow(state, '1', '4', '7')) return 'Win';
-		if (this.checkRow(state, '2', '5', '8')) return 'Win';
-		if (this.checkRow(state, '3', '6', '9')) return 'Win';
+		if (this.checkRow(state, '1', '4', '7')) return {state: 'Win', winner: this.getMoveAt(state, '1')};
+		if (this.checkRow(state, '2', '5', '8')) return {state: 'Win', winner: this.getMoveAt(state, '2')};
+		if (this.checkRow(state, '3', '6', '9')) return {state: 'Win', winner: this.getMoveAt(state, '3')};
 		
 		// Diagonal Wins 
-		if (this.checkRow(state, '1', '5', '9')) return 'Win';
-		if (this.checkRow(state, '3', '5', '7')) return 'Win';
+		if (this.checkRow(state, '1', '5', '9')) return {state: 'Win', winner: this.getMoveAt(state, '1')};
+		if (this.checkRow(state, '3', '5', '7')) return {state: 'Win', winner: this.getMoveAt(state, '3')};
 		
 		for (let key in state.cellList) {
 			// No win and empty spaces left on board, continue game
-			if (state.cellList[key].xoro == '') return 'None';
+			if (state.cellList[key].xoro == '') return {state: 'None', winner: ''};
 		}
 		// No win, no empty spaces left on board, draw
-		return 'Draw';
+		return {state: 'Draw', winner: ''};
 	}
 	
 	resetGame() {
